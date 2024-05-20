@@ -20,7 +20,7 @@ namespace VistaDatos
                 using (SqlConnection oconecion = new SqlConnection(Conexion.cn))
                 {
                     //Consultar a la bd
-                    string query = "select IDUsuario, Nombre, Apellido, Email, Clave, Restablecer, FechaRegistro, Activo, IDRol from Usuario";
+                    string query = "select IDUsuario, Nombre, Apellido, Email, Clave, Restablecer, FechaRegistro, Activo from Usuario";
                     SqlCommand cmd = new SqlCommand(query, oconecion);
                     cmd.CommandType = CommandType.Text;
                     oconecion.Open();
@@ -39,8 +39,8 @@ namespace VistaDatos
                                     Clave = dr["Clave"].ToString(),
                                     Restablecer = Convert.ToBoolean(dr["Restablecer"]),
                                     FechaRegistro = dr["FechaRegistro"].ToString(),
-                                    Activo = Convert.ToBoolean(dr["Activo"]),
-                                    IDRol = Convert.ToInt32(dr["IDRol"])
+                                    Activo = Convert.ToBoolean(dr["Activo"])
+                                    //IDRol = Convert.ToInt32(dr["IDRol"])
                                 }
                                 );
                         }

@@ -5,6 +5,7 @@ namespace VistaAdminCerezos
 {
     public class BundleConfig
     {
+        //REVISAR CONEXIONES
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
@@ -12,7 +13,12 @@ namespace VistaAdminCerezos
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new Bundle("~/bundles/complementos").Include(
+                       //Llamando del fontawesome
                        "~/Scripts/fontawesome/all.min.js",
+                       //Llamando del datatable jquery
+                       "~/Scripts/DataTables/jquery.dataTables.js",
+                       "~/Scripts/DataTables/dataTables.responsive.js", //visualizar en un entorno mobile
+                       //Llamado de scrips
                        "~/Scripts/scripts.js"));
 
             //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -26,7 +32,13 @@ namespace VistaAdminCerezos
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include( "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include( 
+                "~/Content/site.css",
+                //Lllamar css del datatables
+                "~/Content/DataTables/css/jquery.dataTables.css",
+                "~/Content/DataTables/css/responsive.dataTables.css"
+                ));
+
         }
     }
 }

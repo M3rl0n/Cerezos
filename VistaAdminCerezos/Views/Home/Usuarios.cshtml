@@ -160,15 +160,16 @@
             type: "GET",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                    $.each(data.data, function(index, item) {
-                        $("<option>").attr({"value": item.IDRol}).text(item.NombreRol).appendTo("#cborol");
-                    })
-            },
-            error: function (error) {
-                console.log(error)
-            }
-        });
+           success: function (data) {
+               $("<option>").attr({ "value": "0","disabled":"true" }).text("Seleccionar").appendTo("#cborol");
+               $.each(data.data, function (index, item) {
+                   $("<option>").attr({ "value": item.IDRol }).text(item.NombreRol).appendTo("#cborol");
+               })
+           },
+           error: function (error) {
+               console.log(error)
+           }
+       });
 
 
 
@@ -181,6 +182,8 @@
             $("#txtnombre").val("");
             $("#txtapellido").val("");
             $("#txtemail").val("");
+            //Seleccionar por dafault
+            $("#cborol").val($("#cborol option:first").val());
             $("#cboactivo").val(1);
 
             if (json != null) {
@@ -188,6 +191,7 @@
                 $("#txtnombre").val(json.Nombre);
                 $("#txtapellido").val(json.Apellido);
                 $("#txtemail").val(json.Email);
+                $("#cborol").val(json.oRol.IDRol);
                 $("#cboactivo").val(json.Activo == true ? 1 : 0); //si es true 1 y si no 0
             }
 
@@ -210,7 +214,10 @@
                 Activo: $("#cboactivo").val() == 1 ? true : false, //condicional para devolver bool
                 Apellido: $("#txtapellido").val(),
                 Email: $("#txtemail").val(),
-                /*IDRol: 0,*/
+                oRol: {
+                    IDRol: $("#cborol option:selected").val(),
+                    NombreRol: $("#cborol option:selected").text()
+                },
                 Nombre: $("#txtnombre").val()
             };
 

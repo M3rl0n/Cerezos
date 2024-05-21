@@ -62,4 +62,47 @@ namespace VistaDatos
             return lista;
         }
     }
+
+    public class D_Rol
+    {
+        public List<RolCerezos> listar()
+        {
+            List<RolCerezos> lista = new List<RolCerezos>();
+
+            try
+            {
+                using (SqlConnection oconecion = new SqlConnection(Conexion.cn))
+                {
+                    //Consultar a la bd
+                    string query = "select IDRol, NombreRol from Rol";
+
+
+                    SqlCommand cmd = new SqlCommand(query, oconecion);
+                    cmd.CommandType = CommandType.Text;
+                    oconecion.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        //Almacenar cada registro en la lista
+                        while (dr.Read())
+                        {
+                            lista.Add(
+                                new RolCerezos()
+                                {
+                                    IDRol = Convert.ToInt32(dr["IDRol"]),
+                                    NombreRol = dr["NombreRol"].ToString()
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                lista = new List<RolCerezos>();
+            }
+
+            return lista;
+        }
+    }
+
 }

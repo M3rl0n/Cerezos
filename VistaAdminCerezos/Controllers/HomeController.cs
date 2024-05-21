@@ -20,12 +20,22 @@ namespace VistaAdminCerezos.Controllers
             return View();
         }
 
-        //Devuelve Datos
+        //Devuelve lista de usuarios
         [HttpGet]
         public JsonResult ListarUsuarios()
         {
             List<UsuarioCerezos> oLista= new List<UsuarioCerezos>();
             oLista = new N_Usuarios().Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        //Devuelve lista de roles
+        [HttpGet]
+        public JsonResult ListarRoles()
+        {
+            List<RolCerezos> oLista = new List<RolCerezos>();
+            oLista = new N_Roles().Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
 
         }

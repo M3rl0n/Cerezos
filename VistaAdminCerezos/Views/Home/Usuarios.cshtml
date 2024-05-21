@@ -68,6 +68,13 @@
                     </div>
 
                     <div class="col-sm-6">
+                        <label for="cborol" class="form-label">Rol</label>
+                        <select id="cborol" class="form-select">
+
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12">
                         <label for="cboactivo" class="form-label">Activo</label>
                         <select id="cboactivo" class="form-select">
                             <option value="1">Si</option>
@@ -119,7 +126,7 @@
                 {
                     "data": "oRol", "render": function (data) {
                         return data.NombreRol
-                    } 
+                    }
                 },
 
                 {
@@ -146,6 +153,25 @@
                 "url": "https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-MX.json"
             }
         });
+
+        //Lista de roles
+       jQuery.ajax({
+            url: '@Url.Action("ListarRoles", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                    $.each(data.data, function(index, item) {
+                        $("<option>").attr({"value": item.IDRol}).text(item.NombreRol).appendTo("#cborol");
+                    })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+
+
 
         //Funcion para abrir formulario modal
         function abrirModal(json) {

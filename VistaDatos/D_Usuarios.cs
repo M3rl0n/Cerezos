@@ -7,9 +7,51 @@ using VistaEntidad;
 using System.Data.SqlClient;
 using System.Data;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace VistaDatos
 {
+    //LISTAR ROLES
+    public class D_Rol
+    {
+        public List<RolCerezos> listar()
+        {
+            List<RolCerezos> lista = new List<RolCerezos>();
+
+            try
+            {
+                using (SqlConnection oconecion = new SqlConnection(Conexion.cn))
+                {
+                    //Consultar a la bd
+                    string query = "select IDRol, NombreRol from Rol";
+
+
+                    SqlCommand cmd = new SqlCommand(query, oconecion);
+                    cmd.CommandType = CommandType.Text;
+                    oconecion.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        //Almacenar cada registro en la lista
+                        while (dr.Read())
+                        {
+                            lista.Add(
+                                new RolCerezos()
+                                {
+                                    IDRol = Convert.ToInt32(dr["IDRol"]),
+                                    NombreRol = dr["NombreRol"].ToString()
+                                }
+                                );
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                lista = new List<RolCerezos>();
+            }
+            return lista;
+        }
+    }
     public class D_Usuarios
     {
         public List<UsuarioCerezos> listar()
@@ -61,71 +103,107 @@ namespace VistaDatos
 
             return lista;
         }
-    }
 
-    public class D_Rol
-    {
-        public List<RolCerezos> listar()
+        //INSETAR USUARIOS
+        public int Insertar(UsuarioCerezos obj, out string Mensaje)
         {
-            List<RolCerezos> lista = new List<RolCerezos>();
+            int idautogenerado = 0;
 
+            Mensaje = string.Empty;
             try
             {
-                using (SqlConnection oconecion = new SqlConnection(Conexion.cn))
+
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    //Consultar a la bd
-                    string query = "select IDRol, NombreRol from Rol";
+                    SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", oconexion);
+                    cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                    cmd.Parameters.AddWithValue("Apellido", obj.Apellido);
+                    cmd.Parameters.AddWithValue("Email", obj.Email);
+                    cmd.Parameters.AddWithValue("Clave", obj.Clave);
+                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
+                    cmd.Parameters.AddWithValue("IDRol", obj.oRol.IDRol);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    oconexion.Open();
 
-                    SqlCommand cmd = new SqlCommand(query, oconecion);
-                    cmd.CommandType = CommandType.Text;
-                    oconecion.Open();
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        //Almacenar cada registro en la lista
-                        while (dr.Read())
-                        {
-                            lista.Add(
-                                new RolCerezos()
-                                {
-                                    IDRol = Convert.ToInt32(dr["IDRol"]),
-                                    NombreRol = dr["NombreRol"].ToString()
-                                }
-                                );
-                        }
-                    }
+                    cmd.ExecuteNonQuery();
+
+                    //Ultimo id generado con la bd
+                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                lista = new List<RolCerezos>();
+                idautogenerado = 0;
+                Mensaje = ex.Message;
             }
-            return lista;
+            return idautogenerado;
+        }
+
+        //ACTUALIZAR USUARIOS
+        public bool Actualizar(UsuarioCerezos obj, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", oconexion);
+                    cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                    cmd.Parameters.AddWithValue("Apellido", obj.Apellido);
+                    cmd.Parameters.AddWithValue("Email", obj.Email);
+                    cmd.Parameters.AddWithValue("Clave", obj.Clave);
+                    cmd.Parameters.AddWithValue("Activo", obj.Activo);
+                    cmd.Parameters.AddWithValue("IDRol", obj.oRol.IDRol);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    oconexion.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    //Ultimo id generado con la bd
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado; 
+        }
+
+        //ELIMINAR USUARIOS
+        public bool Eliminar(int id, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("delete top (1) from Usuario where IDUsuario = @id", oconexion);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.CommandType = CommandType.Text;
+                    oconexion.Open();
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
         }
     }
-
-    //public int Insertar(UsuarioCerezos obj, out string Mensaje)
-    //{
-    //    int idautogenerado = 0;
-    //    Mensaje = string.Empty;
-    //    try
-    //    {
-    //        using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
-    //        {
-    //            SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", oconexion);
-    //            cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-    //            cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-    //            cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-    //            cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-    //            cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-    //            cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        idautogenerado = 0;
-    //        Mensaje = ex.Message;
-    //    }
-    //}
-
 }

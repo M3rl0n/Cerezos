@@ -14,6 +14,7 @@ namespace VistaNegocio
         private D_Cliente objVistaDato = new D_Cliente();
     }
     /*
+    !!!!SE COMENTA PORQUE SE HACE REFERENCIA A CLASES QUE TODAVIA NO HAN SIDO CREADAS EN VISTAADMIN!!!!
     public int Registrar(ClienteCerezos obj, out string Mensaje)
     {
         Mensaje = string.Empty;

@@ -29,6 +29,6 @@ namespace VistaEntidad
         public bool Restablecer { get; set; }
         public string FechaRegistro { get; set; }
         public bool Activo { get; set; }
-        public int IDRol { get; set; }  //Duda si llamar rol
+        public RolCerezos oRol { get; set; }
     }
 }

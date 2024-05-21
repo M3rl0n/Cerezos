@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VistaEntidad;
 using System.Data.SqlClient;
 using System.Data;
+using System.Reflection;
 
 namespace VistaDatos
 {
@@ -20,8 +21,13 @@ namespace VistaDatos
                 using (SqlConnection oconecion = new SqlConnection(Conexion.cn))
                 {
                     //Consultar a la bd
-                    string query = "select IDUsuario, Nombre, Apellido, Email, Clave, Restablecer, FechaRegistro, Activo from Usuario";
-                    SqlCommand cmd = new SqlCommand(query, oconecion);
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("SELECT u.IDUsuario, u.Nombre, u.Apellido, u.Email, u.Clave, u.Restablecer, u.FechaRegistro, u.Activo,");
+                    sb.AppendLine("r.IDRol, r.NombreRol");
+                    sb.AppendLine("from Usuario u");
+                    sb.AppendLine("inner join Rol r on r.IDRol = u.IDRol");
+
+                    SqlCommand cmd = new SqlCommand(sb.ToString(), oconecion);
                     cmd.CommandType = CommandType.Text;
                     oconecion.Open();
                     using (SqlDataReader dr = cmd.ExecuteReader())
@@ -39,8 +45,9 @@ namespace VistaDatos
                                     Clave = dr["Clave"].ToString(),
                                     Restablecer = Convert.ToBoolean(dr["Restablecer"]),
                                     FechaRegistro = dr["FechaRegistro"].ToString(),
-                                    Activo = Convert.ToBoolean(dr["Activo"])
-                                    //IDRol = Convert.ToInt32(dr["IDRol"])
+                                    Activo = Convert.ToBoolean(dr["Activo"]),
+                                    oRol = new RolCerezos() {IDRol = Convert.ToInt32(dr["IDRol"]), NombreRol = dr["NombreRol"].ToString() }
+                                
                                 }
                                 );
                         }

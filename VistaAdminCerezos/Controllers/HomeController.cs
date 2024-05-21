@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -39,6 +40,27 @@ namespace VistaAdminCerezos.Controllers
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
 
         }
+
+        //Guardar y editar usuario
+        [HttpPost]
+        public JsonResult GuardarUsuarios(UsuarioCerezos objeto)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+
+            if (objeto.IDUsuario == 0) {
+                resultado = new N_Usuarios().Insertar(objeto, out mensaje);
+            }
+            else
+            {
+                resultado = new N_Usuarios().Actualizar(objeto, out mensaje);
+            }
+
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
+
+        }
+
 
 
     }

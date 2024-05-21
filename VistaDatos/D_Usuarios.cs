@@ -123,7 +123,7 @@ namespace VistaDatos
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.AddWithValue("IDRol", obj.oRol.IDRol);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     oconexion.Open();
@@ -153,15 +153,15 @@ namespace VistaDatos
 
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", oconexion);
+                    SqlCommand cmd = new SqlCommand("sp_EditarUsuario", oconexion);
+                    cmd.Parameters.AddWithValue("IDUsuario", obj.IDUsuario);
                     cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
                     cmd.Parameters.AddWithValue("Apellido", obj.Apellido);
                     cmd.Parameters.AddWithValue("Email", obj.Email);
-                    cmd.Parameters.AddWithValue("Clave", obj.Clave);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
                     cmd.Parameters.AddWithValue("IDRol", obj.oRol.IDRol);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     oconexion.Open();

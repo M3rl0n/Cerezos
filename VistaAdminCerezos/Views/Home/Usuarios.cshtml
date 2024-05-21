@@ -47,24 +47,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             @*Formulario para crear usuario*@
-            <div class="modal-body g-2">
+            <div class="modal-body">
                 @*identificar el id de usuario*@
                 <input id="txtid" type="text" value="0" />
-                <div class="row">
+                <div class="row g-2">
 
                     <div class="col-sm-6">
                         <label for="txtnombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="txtnombre">
+                        <input type="text" class="form-control" id="txtnombre" autocomplete="off">
                     </div>
 
                     <div class="col-sm-6">
                         <label for="txtapellido" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="txtapellido">
+                        <input type="text" class="form-control" id="txtapellido" autocomplete="off">
                     </div>
 
                     <div class="col-sm-6">
                         <label for="txtemail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="txtemail">
+                        <input type="email" class="form-control" id="txtemail" autocomplete="off">
                     </div>
 
                     <div class="col-sm-6">
@@ -82,6 +82,13 @@
                         </select>
                     </div>
 
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -185,6 +192,7 @@
             //Seleccionar por dafault
             $("#cborol").val($("#cborol option:first").val());
             $("#cboactivo").val(1);
+            $("#mensajeError").hide();
 
             if (json != null) {
                 $("#txtid").val(json.IDUsuario);
@@ -221,14 +229,50 @@
                 Nombre: $("#txtnombre").val()
             };
 
-            //regla para saber cuadno crear y cuando no
-            if (Usuario.IDUsuario == 0) {
-                tabladata.row.add(Usuario).draw(false);
-            } else {
-                tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+            jQuery.ajax({
+                url: '@Url.Action("GuardarUsuarios", "Home")',
+                type: "POST",
+                data: JSON.stringify({ objeto: Usuario }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
 
-            }
-            $("#FormModal").modal("hide");
+                    debugger;
+
+                    //Usuario nuevo
+                    if (Usuario.IDUsuario == 0) {
+
+                        if (data.resultado != 0) {
+                            Usuario.IDUsuario = data.resultado;
+                            tabladata.row.add(Usuario).draw(false);
+                            $("#FormModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+
+                    //USUARIO ACTUALIZAR
+                    } else {
+                        if (data.resultado) {
+                            tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+                            filaSeleccionada = null;
+                            $("#FormModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }  
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                },
+                beforeSend: function () {
+
+                }
+            });
+
+           
+            
 
         }
 

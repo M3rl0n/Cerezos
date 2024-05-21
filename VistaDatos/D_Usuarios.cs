@@ -100,8 +100,31 @@ namespace VistaDatos
             {
                 lista = new List<RolCerezos>();
             }
-
             return lista;
+        }
+    }
+
+    public int Insertar(UsuarioCerezos obj, out string Mensaje)
+    {
+        int idautogenerado = 0;
+        Mensaje = string.Empty;
+        try
+        {
+            using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+            {
+                SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", oconexion);
+                cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+                cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
+            }
+        }
+        catch (Exception ex)
+        {
+            idautogenerado = 0;
+            Mensaje = ex.Message;
         }
     }
 

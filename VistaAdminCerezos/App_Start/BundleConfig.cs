@@ -5,7 +5,6 @@ namespace VistaAdminCerezos
 {
     public class BundleConfig
     {
-        //REVISAR CONEXIONES
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
@@ -33,7 +32,7 @@ namespace VistaAdminCerezos
                       "~/Scripts/bootstrap.bundle.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include( 
-                "~/Content/site.css",
+                "~/Content/Site.css",
                 //Lllamar css del datatables
                 "~/Content/DataTables/css/jquery.dataTables.css",
                 "~/Content/DataTables/css/responsive.dataTables.css"

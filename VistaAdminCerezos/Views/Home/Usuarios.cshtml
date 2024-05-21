@@ -27,7 +27,7 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
-                    @*<th>Rol</th>*@
+                    <th>Rol</th>
                     <th>Activo</th>
                     <th></th>
                 </tr>
@@ -115,8 +115,13 @@
             "columns": [
                 { "data": "Nombre" },
                 { "data": "Apellido" },
-                { "data": "Email" },
-                /*{"data":"Rol"},*/
+                { "data": "Email"},
+                {
+                    "data": "oRol", "render": function (data) {
+                        return data.NombreRol
+                    } 
+                },
+
                 {
                     "data": "Activo", "render": function (valor) {
                         if (valor) {

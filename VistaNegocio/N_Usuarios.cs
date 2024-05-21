@@ -16,8 +16,17 @@ namespace VistaNegocio
         //Retornar lista de usuarios
         public List<UsuarioCerezos> Listar()
         {
-            return objVistaDato.listar();   
+            return objVistaDato.listar();
         }
+    }
 
+    public class N_Roles
+    {
+        //Accesder a los metodos que tengan la clase D_Usuarios
+        private D_Rol objVistaDato = new D_Rol();      //Retornar lista de usuarios
+        public List<RolCerezos> Listar()
+        {
+            return objVistaDato.listar();
+        }
     }
 }

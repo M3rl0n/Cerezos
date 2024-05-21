@@ -26,7 +26,7 @@ namespace VistaAdminCerezos.Controllers
         {
             List<UsuarioCerezos> oLista= new List<UsuarioCerezos>();
             oLista = new N_Usuarios().Listar();
-            return Json(oLista, JsonRequestBehavior.AllowGet);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
 
         }
 

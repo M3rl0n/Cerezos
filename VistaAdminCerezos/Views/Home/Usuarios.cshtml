@@ -178,9 +178,6 @@
            }
        });
 
-
-
-
         //Funcion para abrir formulario modal
         function abrirModal(json) {
 
@@ -237,7 +234,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
 
-                   /* debugger;*/
+                    $(".modal-body").LoadingOverlay("hide");
 
                     //Usuario nuevo
                     if (Usuario.IDUsuario == 0) {
@@ -264,10 +261,16 @@
                     }
                 },
                 error: function (error) {
-                    console.log(error)
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
                 },
                 beforeSend: function () {
-
+                    $(".modal-body").LoadingOverlay("Show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    })
                 }
             });
 

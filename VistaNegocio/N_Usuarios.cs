@@ -53,10 +53,24 @@ namespace VistaNegocio
             if (string.IsNullOrEmpty(Mensaje))
             {
                 //Llamar clase recursos + metodo
-                string clave = "Prueba123";
-                obj.Clave = N_Recursos.ConvertirSHA256(clave);
+                string clave = N_Recursos.GenerarClave();
+                string asunto = "Creacion de cuenta";
+                string mensajeCorreo = "<h3>Su cuenta feu creada con exito!</h3><br><p>Su contraseña para acceder es: !clave!</p>";
+                mensajeCorreo = mensajeCorreo.Replace("!clave!", clave);
 
-                return objVistaDato.Insertar(obj, out Mensaje);
+                //Enviar correo
+                bool respuesta = N_Recursos.EnviarCorreo(obj.Email, asunto, mensajeCorreo);
+                if (respuesta)
+                {
+                    //Encriptar
+                    obj.Clave = N_Recursos.ConvertirSHA256(clave);
+                    return objVistaDato.Insertar(obj, out Mensaje);
+                }
+                else
+                {
+                    Mensaje = "No se puede enviar el correo";
+                    return 0;
+                }
             }
             else
             {
@@ -101,8 +115,6 @@ namespace VistaNegocio
         {
             return objVistaDato.Eliminar(id, out Mensaje);
         }
-
-
     }
 
 

@@ -73,8 +73,5 @@ namespace VistaAdminCerezos.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
-
-
-
     }
 }

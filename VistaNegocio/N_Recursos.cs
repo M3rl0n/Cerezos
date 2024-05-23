@@ -68,6 +68,24 @@ namespace VistaNegocio
             return resultado;
         }
 
+        //Convertir cadena de texto (ruta imagen) en base 64
 
+        public static string ConvertirBase64(string ruta, out bool conversion)
+        {
+            string textobase64 = string.Empty;
+            conversion = true;
+            try
+            {
+                byte[] bytes = File.ReadAllBytes(ruta);
+                textobase64 = Convert.ToBase64String(bytes);
+            }
+            catch
+            {
+                conversion = false;
+            }
+
+            return textobase64;
+
+        }
     }
 }

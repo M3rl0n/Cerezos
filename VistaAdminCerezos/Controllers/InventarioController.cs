@@ -119,11 +119,11 @@ namespace VistaAdminCerezos.Controllers
             //Logica para guardar la imagen
             if (operacionExitosa)
             {
-                if(archivoImagen != null)
+                if (archivoImagen != null)
                 {
                     string RutaGuardar = ConfigurationManager.AppSettings["ServidorFotos"];
                     string extension = Path.GetExtension(archivoImagen.FileName);
-                    string nombreimg = string.Concat(oProducto.IDProducto.ToString(),extension);
+                    string nombreimg = string.Concat(oProducto.IDProducto.ToString(), extension);
 
                     try
                     {
@@ -149,11 +149,42 @@ namespace VistaAdminCerezos.Controllers
                 }
             }
 
-            return Json(new { operacionExitosa = operacionExitosa, IDGenerado =  oProducto.IDProducto, mensaje, JsonRequestBehavior.AllowGet });
+            return Json(new { operacionExitosa = operacionExitosa, IDGenerado = oProducto.IDProducto, mensaje, JsonRequestBehavior.AllowGet });
+        }
+
+        //Metodo para devolver imagnes en Base64
+
+        [HttpPost]
+        public JsonResult ImagenProducto(int id)
+        {
+            bool conversion;
+            ProductosCerezos oProducto = new N_Producto().Listar().Where(p => p.IDProducto == id).FirstOrDefault();
+            string textoBase64 = N_Recursos.ConvertirBase64(Path.Combine(oProducto.RutaImagen, oProducto.NombreImagen), out conversion);
+
+            return Json(new
+            {
+                conversion = conversion,
+                textobase64 = textoBase64,
+                extension = Path.GetExtension(oProducto.NombreImagen)
+            },
+            JsonRequestBehavior.AllowGet);
+        }
+
+        //Eliminar Producto
+        [HttpPost]
+        public JsonResult EliminarProducto(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new N_Producto().Eliminar(id, out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+
         }
 
 
-
         #endregion
+
     }
 }

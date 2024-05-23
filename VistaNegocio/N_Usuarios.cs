@@ -11,7 +11,7 @@ namespace VistaNegocio
     //Listar roles
     public class N_Roles
     {
-        //Accesder a los metodos que tengan la clase D_Usuarios
+        //Accesder a los metodos que tengan la clase D_Roles
         private D_Rol objVistaDato = new D_Rol();      //Retornar lista de usuarios
         public List<RolCerezos> Listar()
         {

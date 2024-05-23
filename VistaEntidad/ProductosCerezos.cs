@@ -28,12 +28,16 @@ namespace VistaEntidad
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public decimal Precio { get; set; }
+
+        public string PrecioTexto { get; set; }
         public int Stock { get; set; }
         public string FechaRegistro { get; set; } //Data time? duda
         public string RutaImagen { get; set; }
         public string NombreImagen { get; set; }
         public bool Activo { get; set; }
         public CategoriaProductos oCategoria { get; set; }  //Llamamos la clase CategoriaProducto
+        public string Base64 { get; set; } //Formato para mostrar las imagens
+        public string Extension { get; set; } // ext de imagen
 
     }
 }

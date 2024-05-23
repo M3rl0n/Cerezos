@@ -48,6 +48,7 @@
     <Compile Include="D_CategoriaProd.cs" />
     <Compile Include="D_Cliente.cs" />
     <Compile Include="Conexion.cs" />
+    <Compile Include="D_Productos.cs" />
     <Compile Include="D_Usuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

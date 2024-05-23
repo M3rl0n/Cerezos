@@ -20,6 +20,9 @@ namespace VistaAdminCerezos.Controllers
             return View();
         }
 
+        //++++++++++++++++ CATEGORIA +++++++++++++++++++++++++
+        #region CATEGORIAPRODUCTOS
+
         //Devuelve lista de categorias prod
         [HttpGet]
         public JsonResult ListarCategoriasProd()
@@ -58,5 +61,6 @@ namespace VistaAdminCerezos.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
+        #endregion
     }
 }

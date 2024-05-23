@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -61,6 +63,54 @@ namespace VistaAdminCerezos.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
+        #endregion
+
+        //++++++++++++++++ PRODUCTOS +++++++++++++++++++++++++
+        #region PRODUCTOS
+        //Devuelve lista de prod
+        [HttpGet]
+        public JsonResult ListarProductos()
+        {
+            List<ProductosCerezos> oLista = new List<ProductosCerezos>();
+            oLista = new N_Producto().Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        //Guardar y editar prod
+        [HttpPost]
+        public JsonResult GuardarProductos(string objeto, HttpPostedFileBase archivoImagen)
+        {
+            object resultado;
+            string mensaje = string.Empty;
+            bool operacionExitosa = true;
+            bool GuardarImagenExito = true;
+
+            ProductosCerezos oProducto = new ProductosCerezos();
+            oProducto = JsonConvert.DeserializeObject<ProductosCerezos>(objeto);
+
+            decimal precio;
+
+            if(decimal.TryParse(oProducto.PrecioTexto, NumberStyles.AllowDecimalPoint, new CultureInfo("es-CO"), out precio))
+            {
+                oProducto.Precio = precio;
+            }
+            else
+            {
+                return Json(new {operacionExitosa = false, mensaje = "El formao del precio debe ser ##.##", JsonRequestBehavior.AllowGet});
+            }
+
+            if (oProducto.IDProducto == 0)
+            {
+                resultado = new N_Producto().Insertar(oProducto, out mensaje);
+            }
+            else
+            {
+                resultado = new N_Producto().Actualizar(oProducto, out mensaje);
+            }
+            return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
         #endregion
     }
 }

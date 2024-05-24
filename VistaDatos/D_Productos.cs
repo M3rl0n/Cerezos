@@ -147,13 +147,13 @@ namespace VistaDatos
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
                     string query = "update Productos set RutaImagen = @rutaimagen, NombreImagen = @nombreimagen where IDProducto = @IDProducto";
-                    SqlCommand cmd = new SqlCommand("sp_RegistrarProducto", oconexion);
+                    SqlCommand cmd = new SqlCommand(query, oconexion);
                     cmd.Parameters.AddWithValue("@rutaimagen", obj.RutaImagen);
                     cmd.Parameters.AddWithValue("@nombreimagen", obj.NombreImagen);
                     cmd.Parameters.AddWithValue("@IDProducto", obj.IDProducto);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
 
                     oconexion.Open();
 

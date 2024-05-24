@@ -60,14 +60,14 @@
                             <img id="img_producto" height="197" width="200" class="border rounded mx-auto d-block img-fluid" />
                         </div>
                         <div class="mb-2">
-                            <input class="form-control" type="file" id="fileProducto" accept="image/png, image/jpg, image/jpeg" onchange="" />
+                            <input class="form-control" type="file" id="fileProducto" accept="image/png, image/jpg, image/jpeg" onchange="mostrarImagen(this)" />
                         </div>
                     </div>
 
                     <div class="col-sm-3">
                         <div class="mb-3">
                             <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="txtnombre" name="nombre" autocomplete="off"/>
+                            <input type="text" class="form-control" id="txtnombre" name="nombre" autocomplete="off" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Descripcion</label>
@@ -127,6 +127,21 @@
         var tabladata;
         var filaSeleccionada;
 
+
+        //Mostrar imagen de producto en el crud
+        function mostrarImagen(input) {
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#img_producto").attr("src",e.target.result).width(200).height(197)
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+
+
         /*EJEMPLOS PARA LOS DEMAS*/
             @*jQuery.ajax({
                  url: '@Url.Action("ListarUsuarios", "Home")',
@@ -144,6 +159,8 @@
 
                  },
          });*@
+
+
 
         tabladata = $("#TablaUsuarios").DataTable({
             responsive: true,
@@ -180,18 +197,45 @@
             }
         });
 
+         //Lista de categorias
+            jQuery.ajax({
+                 url: '@Url.Action("ListarCategoriasProd", "Inventario")',
+                 type: "GET",
+                 dataType: "json",
+                 contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbocategoria");
+                    $.each(data.data, function (index, item) {
+                        $("<option>").attr({ "value": item.IDCategoria }).text(item.Nombre).appendTo("#cbocategoria");
+                    })
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
+
         //Funcion para abrir formulario modal
         function abrirModal(json) {
 
             //Para limpiar campos al crear
             $("#txtid").val(0);
+            $("#img_producto").removeAttr("src");
+            $("#fileProducto").val("");
             $("#txtnombre").val("");
+            $("#txtdescripcion").val("");
+            $("#cbocategoria").val($("#cbocategoria option:first").val());
+            $("#txtprecio").val("");
+            $("#txtstock").val("");
             $("#cboactivo").val(1);
             $("#mensajeError").hide();
 
             if (json != null) {
-                $("#txtid").val(json.IDCategoria);
+                $("#txtid").val(json.Producto);
                 $("#txtnombre").val(json.Nombre);
+                $("#txtdescripcion").val(json.Descripcion);
+                $("#cbocategoria").val(json.oCategoria.IDCategoria);
+                $("#txtprecio").val(json.Precio);
+                $("#txtstock").val(json.Stock);
                 $("#cboactivo").val(json.Activo == true ? 1 : 0); //si es true 1 y si no 0
             }
 
@@ -252,38 +296,54 @@
 
         //funcion para guardar los datos
         function Guardar() {
-            var Categoria = {
-                IDCategoria: $("#txtid").val(),
+
+            var ImagenSeleccionada = $("#fileProducto")[0].files[0];
+
+            var Producto = {
+                IDProducto: $("#txtid").val(),
                 Nombre: $("#txtnombre").val(),
+                Descripcion: $("#txtdescripcion").val(),
+                oCategoria: {
+                    IDCategoria: $("#cbocategoria option:selected").val(),
+                    Nombre: $("#cbocategoria option:selected").text()
+                },
+                PrecioTexto: $("#txtprecio").val(),
+                Precio: $("#txtprecio").val(),
+                Stock: $("#txtstock").val(),
                 Activo: $("#cboactivo").val() == 1 ? true : false, //condicional para devolver bool
             };
 
+
+            var request = new FormData();
+            request.append("Objeto", JSON.stringify(Producto))
+            request.append("archivoImagen", ImagenSeleccionada)
+
             jQuery.ajax({
-                url: '@Url.Action("GuardarCategoriaProd", "Inventario")',
+                url: '@Url.Action("GuardarProductos", "Inventario")',
                 type: "POST",
-                data: JSON.stringify({ objeto: Categoria }),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                data: request,
+                processData: false,
+                contentType: false,
                 success: function (data) {
 
                     $(".modal-body").LoadingOverlay("hide");
 
-                    //Categoria producto nuevo
-                    if (Categoria.IDCategoria == 0) {
+                    //Producto nuevo
+                    if (Producto.IDProducto == 0) {
 
-                        if (data.resultado != 0) {
-                            Categoria.IDCategoria = data.resultado;
-                            tabladata.row.add(Categoria).draw(false);
+                        if (data.IDGenerado != 0) {
+                            Producto.IDProducto = data.IDGenerado;
+                            tabladata.row.add(Producto).draw(false);
                             $("#FormModal").modal("hide");
                         } else {
                             $("#mensajeError").text(data.mensaje);
                             $("#mensajeError").show();
                         }
 
-                    //Categoria producto ACTUALIZAR
+                    //Producto ACTUALIZAR
                     } else {
-                        if (data.resultado) {
-                            tabladata.row(filaSeleccionada).data(Categoria).draw(false);
+                        if (data.operacionExitosa) {
+                            tabladata.row(filaSeleccionada).data(Producto).draw(false);
                             filaSeleccionada = null;
                             $("#FormModal").modal("hide");
                         } else {

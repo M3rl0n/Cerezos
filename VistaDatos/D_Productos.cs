@@ -25,7 +25,7 @@ namespace VistaDatos
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("select p.IDProducto, p.Nombre, p.Descripcion, p.Precio, p.Stock, p.RutaImagen, p.NombreImagen, p.Activo,");
                     sb.AppendLine("cp.IDCategoria, cp.Nombre[NomCategoria]");
-                    sb.AppendLine("Productos p");
+                    sb.AppendLine("from Productos p");
                     sb.AppendLine("inner join Categoria_Productos cp on cp.IDCategoria = p.IDCategoria");
 
                     SqlCommand cmd = new SqlCommand(sb.ToString(), oconecion);

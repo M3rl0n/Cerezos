@@ -21,6 +21,8 @@ namespace VistaAdminCerezos
                        "~/Scripts/loadingoverlay/loadingoverlay.min.js",
                        //Lamar alert
                        "~/Scripts/sweetalert.min.js",
+                       //Jquery validate
+                       "~/Scripts/jquery.validate.js",
                        //Llamado de scrips
                        "~/Scripts/scripts.js"));
 

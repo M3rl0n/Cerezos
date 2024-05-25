@@ -115,6 +115,7 @@ namespace VistaDatos
                     cmd.Parameters.AddWithValue("Precio", obj.Precio);
                     cmd.Parameters.AddWithValue("Stock", obj.Stock);
                     cmd.Parameters.AddWithValue("Activo", obj.Activo);
+                    cmd.Parameters.AddWithValue("IDCategoria", obj.oCategoria.IDCategoria);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;

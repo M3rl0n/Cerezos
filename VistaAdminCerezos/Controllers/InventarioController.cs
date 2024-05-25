@@ -163,7 +163,7 @@ namespace VistaAdminCerezos.Controllers
 
             return Json(new
             {
-                conversion = conversion,
+                Conversion = conversion,
                 textobase64 = textoBase64,
                 extension = Path.GetExtension(oProducto.NombreImagen)
             },

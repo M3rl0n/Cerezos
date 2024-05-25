@@ -21,7 +21,7 @@
             </div>
         </div>
         <hr />
-        @*TABLA DE USUARIOS*@
+        @*TABLA DE Productos*@
         <table id="TablaProductos" class="display cell-border" style="width: 100%">
             <thead>
                 <tr>
@@ -51,7 +51,7 @@
             @*Formulario para crear Producto*@
             <div class="modal-body">
                 @*identificar el id de Producto*@
-                <input id="txtid" type="text" value="0" />
+                <input id="txtid" type="hidden" value="0" />
 
                 <form id="contenedor" class="row">
 
@@ -223,7 +223,7 @@
 
           //Validar campos necesarios y formato de estos a la hora de registrar
             jQuery.validator.addMethod("preciodecimal", function (value, element) {
-                return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
+                return this.optional(element) || /^\d{0,6}(\.\d{1,2})?$/i.test(value);
             }, "El formato correccto del precio es ##.##");
 
         //Validar formulario contenedor
@@ -273,13 +273,40 @@
             $("#mensajeError").hide();
 
             if (json != null) {
-                $("#txtid").val(json.Producto);
+                $("#txtid").val(json.IDProducto);
                 $("#txtnombre").val(json.Nombre);
                 $("#txtdescripcion").val(json.Descripcion);
                 $("#cbocategoria").val(json.oCategoria.IDCategoria);
                 $("#txtprecio").val(json.Precio);
                 $("#txtstock").val(json.Stock);
                 $("#cboactivo").val(json.Activo == true ? 1 : 0); //si es true 1 y si no 0
+
+                //Mostrar la imagen en el modal
+                 jQuery.ajax({
+                    url: '@Url.Action("ImagenProducto", "Inventario")',
+                    type: "POST",
+                     data: JSON.stringify({ id : json.IDProducto}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                     success: function (data) {
+
+                         $("#img_producto").LoadingOverlay("hide");
+
+                        if (data.Conversion) {
+                            $("#img_producto").attr({ "src": "data:image/" + data.extension + ";base64," + data.textobase64 });
+                        }
+                    },
+                    error: function (error) {
+                        $("#img_producto").LoadingOverlay("hide");
+                        $("#mensajeError").show();
+                        $("#mensajeError").text("Error al mostrar imagen");
+                    },
+                    beforeSend: function () {
+                        $("#img_producto").LoadingOverlay("show");
+                    },
+                });
+
+
             }
 
             $("#FormModal").modal("show");
@@ -287,8 +314,8 @@
 
         //Funcion boton editar
         $("#TablaProductos tbody").on("click",'.btn-editar', function () {
-            ProdSeleccionado = $(this).closest("tr");
-            var data = tabladata.row(ProdSeleccionado).data();
+            filaSeleccionada = $(this).closest("tr");
+            var data = tabladata.row(filaSeleccionada).data();
             console.log(data);
             //Recibe la informacion el modal
             abrirModal(data)
@@ -297,8 +324,8 @@
 
         //Funcion boton eliminar
         $("#TablaProductos tbody").on("click", '.btn-eliminar', function () {
-            var ProdSeleccionado = $(this).closest("tr");
-            var data = tabladata.row(ProdSeleccionado).data();
+            var ProductoSeleccionado = $(this).closest("tr");
+            var data = tabladata.row(ProductoSeleccionado).data();
             //Advertencia
             swal({
                 title: "¿Esta Seguro?",
@@ -312,9 +339,9 @@
             },
                 function () {
                     jQuery.ajax({
-                        url: '@Url.Action("EliminarCategoriaProd", "Inventario")',
+                        url: '@Url.Action("EliminarProducto", "Inventario")',
                         type: "POST",
-                        data: JSON.stringify({ id: data.IDCategoria }),
+                        data: JSON.stringify({ id: data.IDProducto }),
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
@@ -322,7 +349,7 @@
                             /*debugger;*/
 
                             if (data.resultado) {
-                                tabladata.row(CategoriaProdSeleccionado).remove().draw();
+                                tabladata.row(ProductoSeleccionado).remove().draw();
                             } else {
                                 swal("No se pudo eliminar", data.mensaje, "error")
                             }

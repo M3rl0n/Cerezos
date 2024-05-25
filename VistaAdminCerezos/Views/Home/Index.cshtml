@@ -7,7 +7,6 @@
     <li class="breadcrumb-item active">Dashboard</li>
 </ol>
 
-                  </ol>
 <div class="row">
     <div class="col-xl-3 col-md-6">
         <div class="card bg-success text-white mb-4">
@@ -24,6 +23,23 @@
             </div>
         </div>
     </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-danger text-white mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h6>Total Solicitudes</h6>
+                        <h6 id="totalsolicitudes">0</h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <i class="fas fa-address-book fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col-xl-3 col-md-6">
         <div class="card bg-warning text-white mb-4">
             <div class="card-body">
@@ -39,8 +55,9 @@
             </div>
         </div>
     </div>
+
     <div class="col-xl-3 col-md-6">
-        <div class="card bg-success text-white mb-4">
+        <div class="card bg-secondary text-white mb-4">
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-9">
@@ -55,3 +72,88 @@
         </div>
     </div>
 </div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-tags me-1"></i>
+        Historial de ventas
+    </div>
+    <div class="card-body">
+        @*ETIQUETAS*@
+        <form>
+            <div class="row align-items-end">
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Fecha de inicio:</label>
+                        <input class="form-control" type="text" id="txtfechainicio" name="fechainicio" />
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">Fecha de fin:</label>
+                        <input class="form-control" type="text" id="txtfechafin" name="fechafin" />
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="mb-2">
+                        <label class="form-label">ID Transaccion:</label>
+                        <input class="form-control" type="text" id="txtidtransaccion" name="transaccion" />
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary" id="btnbuscar" type="button"><i class="fas fa-search"></i>Buscar</button>
+                    </div>
+                </div>
+                @*Incorporar excel?*@
+            </div>
+        </form>
+        <hr />
+        @*TABLA DE VENTAS*@
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="TablaVentas" class="display cell-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fecha Venta</th>
+                            <th>Cliente</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>ID Transaccion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        jQuery.ajax({
+            url: '@Url.Action("VistaDashboard", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                var objeto = data.resultado;
+               $("#totalcliente").text(objeto.TotalClientes)
+                $("#totalsolicitudes").text(objeto.TotalSolicitudes)
+                $("#totalventas").text(objeto.TotalVentas)
+                $("#totalproductos").text(objeto.TotalProductos)
+            }
+        })
+
+    </script>
+}

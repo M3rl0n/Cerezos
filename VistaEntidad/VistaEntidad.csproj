@@ -45,6 +45,7 @@
     <Compile Include="CategoriaProductos.cs" />
     <Compile Include="Ciudad.cs" />
     <Compile Include="ClienteCerezos.cs" />
+    <Compile Include="DashboardCerezos.cs" />
     <Compile Include="DepartamentoCerezos.cs" />
     <Compile Include="DetalleVentaCerezos.cs" />
     <Compile Include="NovedadesINVCerezos.cs" />

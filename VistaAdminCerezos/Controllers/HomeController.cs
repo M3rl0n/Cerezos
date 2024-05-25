@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using VistaEntidad;
 using VistaNegocio;
 
@@ -73,5 +74,14 @@ namespace VistaAdminCerezos.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
         }
+
+        //Dashboard
+        [HttpGet]
+        public JsonResult VistaDashboard()
+        {
+            DashboardCerezos objeto = new N_Reporte().VerDashboard();
+            return Json(new { resultado = objeto }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

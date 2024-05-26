@@ -51,6 +51,7 @@
     <Compile Include="NovedadesINVCerezos.cs" />
     <Compile Include="ProductosCerezos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReporteVentas.cs" />
     <Compile Include="RolCerezos.cs" />
     <Compile Include="SeguimientoENVCerezos.cs" />
     <Compile Include="SolicitudCerezos.cs" />

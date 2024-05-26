@@ -140,6 +140,11 @@
 @section scripts{
     <script>
 
+        //Funcionalidad de calendario - fecha prede
+        $("#txtfechainicio").datepicker({dateFormat: 'dd/mm/yy'}).datepicker('setDate', new Date());
+        $("#txtfechafin").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date());
+
+        //Llenar etiquetas dashboard
         jQuery.ajax({
             url: '@Url.Action("VistaDashboard", "Home")',
             type: "GET",

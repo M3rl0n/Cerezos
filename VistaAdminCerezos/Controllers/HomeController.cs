@@ -75,6 +75,19 @@ namespace VistaAdminCerezos.Controllers
 
         }
 
+        //Leer reporte
+        [HttpGet]
+        public JsonResult ListaReporteVentas(string fechainicio, string fechafin, string idtransaccion)
+        {
+            List<ReporteVentas> olista = new List<ReporteVentas>();
+
+
+            olista = new N_Reporte().Ventas(fechainicio,fechafin,idtransaccion);
+            return Json(new { data = olista }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
         //Dashboard
         [HttpGet]
         public JsonResult VistaDashboard()

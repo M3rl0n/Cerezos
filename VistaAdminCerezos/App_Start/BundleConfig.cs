@@ -22,6 +22,8 @@ namespace VistaAdminCerezos
                        //Lamar alert
                        "~/Scripts/sweetalert.min.js",
                        //Jquery validate
+                       "~/Scripts/jquery-ui.js",
+                       //UI
                        "~/Scripts/jquery.validate.js",
                        //Llamado de scrips
                        "~/Scripts/scripts.js"));
@@ -43,7 +45,9 @@ namespace VistaAdminCerezos
                 "~/Content/DataTables/css/jquery.dataTables.css",
                 "~/Content/DataTables/css/responsive.dataTables.css",
                 //Ccs de alert
-                "~/Content/sweetalert.css"
+                "~/Content/sweetalert.css",
+                //UI
+                "~/Content/jquery-ui.css"
                 ));
 
         }

@@ -140,6 +140,10 @@
 @section scripts{
     <script>
 
+        var tabladata;
+
+        $(document).ready(function () {
+
         //Funcionalidad de calendario - fecha prede
         $("#txtfechainicio").datepicker({dateFormat: 'dd/mm/yy'}).datepicker('setDate', new Date());
         $("#txtfechafin").datepicker({ dateFormat: 'dd/mm/yy' }).datepicker('setDate', new Date());
@@ -159,6 +163,56 @@
                 $("#totalproductos").text(objeto.TotalProductos)
             }
         })
+
+        //Filtro de busqueda de ventas
+
+        //string fechainicio, string fechafin, string idtransaccion
+
+        var Url = '@Url.Action("ListaReporteVentas", "Home")' +
+            "?fechainicio=" + $("#txtfechainicio").val()+
+            "&fechafin=" + $("#txtfechafin").val()+
+            "&idtransaccion=" + $("#txtidtransaccion").val()
+
+            //TABLA
+
+            tabladata = $("#TablaVentas").DataTable({
+                responsive: true,
+                ordering: false,
+                "ajax": {
+                    url: Url,
+                    type: "GET",
+                    dataType: "json"
+                },
+                "columns": [
+                    { "data": "FechaVenta" },
+                    { "data": "Cliente" },
+                    { "data": "Producto"},
+                    { "data": "Precio"},
+                    { "data": "Cantidad"},
+                    { "data": "Total"},
+                    { "data": "IDTransaccion"}
+                ],
+                //Idioma de datatable
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/2.0.7/i18n/es-MX.json"
+                }
+            });
+
+
+        })
+
+        //Function para el boton buscar
+        $("#btnbuscar").on("click", function () {
+            var NuevaUrl = '@Url.Action("ListaReporteVentas", "Home")' +
+            "?fechainicio=" + $("#txtfechainicio").val()+
+            "&fechafin=" + $("#txtfechafin").val()+
+            "&idtransaccion=" + $("#txtidtransaccion").val()
+
+            tabladata.ajax.url(NuevaUrl).load();
+
+        })
+
+
 
     </script>
 }

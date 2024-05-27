@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccesoSistemaController.cs" />
     <Compile Include="Controllers\GestClientesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
@@ -482,6 +483,8 @@
     <Content Include="Views\GestClientes\Pedidos.cshtml" />
     <Content Include="Views\GestClientes\Solicitudes.cshtml" />
     <Content Include="Views\VentasCerezos\Ventas.cshtml" />
+    <Content Include="Views\AccesoSistema\Index.cshtml" />
+    <Content Include="Views\AccesoSistema\CambiarClave.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using VistaDatos;
@@ -55,7 +56,7 @@ namespace VistaNegocio
                 //Llamar clase recursos + metodo
                 string clave = N_Recursos.GenerarClave();
                 string asunto = "Creacion de cuenta";
-                string mensajeCorreo = "<h3>Su cuenta feu creada con exito!</h3><br><p>Su contraseña para acceder es: !clave!</p>";
+                string mensajeCorreo = "<h3>Su cuenta fue creada con exito!</h3><br><p>Su contraseña para acceder es: !clave!</p>";
                 mensajeCorreo = mensajeCorreo.Replace("!clave!", clave);
 
                 //Enviar correo
@@ -115,6 +116,48 @@ namespace VistaNegocio
         {
             return objVistaDato.Eliminar(id, out Mensaje);
         }
+
+        //Llamado de metodo Cambiar Clave, reglas de negocio
+        public bool CambiarClave(int IDUsuario, string NuevaClave, out string Mensaje)
+        {
+            return objVistaDato.CambiarClave(IDUsuario, NuevaClave, out Mensaje);
+        }
+
+        //Llamado de metodo restablecer clave, reglas de negocio
+        public bool RestablecerClave(int IDUsuario, string Email, out string Mensaje)
+        {
+            Mensaje = string.Empty;
+            string NuevaClave = N_Recursos.GenerarClave();
+            bool resultado = objVistaDato.RestablecerClave(IDUsuario, N_Recursos.ConvertirSHA256(NuevaClave), out Mensaje);
+
+            //Validar si la contraseña fue reestablecida
+            if (resultado)
+            {
+                string asunto = "Contraseña Reestablecida";
+                string mensajeCorreo = "<h3>Su cuenta fue reestablecida con exito!</h3><br><p>Su contraseña para acceder ahora es: !clave!</p>";
+                mensajeCorreo = mensajeCorreo.Replace("!clave!", NuevaClave);
+
+                //Enviar correo
+                bool respuesta = N_Recursos.EnviarCorreo(Email, asunto, mensajeCorreo);
+                if (respuesta)
+                {
+                    return true;
+                }
+                else
+                {
+                    Mensaje = "No se pudo enviar el correo";
+                    return false;
+                }
+            }
+            else
+            {
+                Mensaje = "No se pudo restablecer la constraseña";
+                return false;
+            }
+
+
+        }
+
     }
 
 

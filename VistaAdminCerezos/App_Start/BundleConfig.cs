@@ -17,6 +17,14 @@ namespace VistaAdminCerezos
                        //Llamando del datatable jquery
                        "~/Scripts/DataTables/jquery.dataTables.js",
                        "~/Scripts/DataTables/dataTables.responsive.js", //visualizar en un entorno mobile
+                       //Llamar loading overlay
+                       "~/Scripts/loadingoverlay/loadingoverlay.min.js",
+                       //Lamar alert
+                       "~/Scripts/sweetalert.min.js",
+                       //Jquery validate
+                       "~/Scripts/jquery-ui.js",
+                       //UI
+                       "~/Scripts/jquery.validate.js",
                        //Llamado de scrips
                        "~/Scripts/scripts.js"));
 
@@ -35,7 +43,11 @@ namespace VistaAdminCerezos
                 "~/Content/Site.css",
                 //Lllamar css del datatables
                 "~/Content/DataTables/css/jquery.dataTables.css",
-                "~/Content/DataTables/css/responsive.dataTables.css"
+                "~/Content/DataTables/css/responsive.dataTables.css",
+                //Ccs de alert
+                "~/Content/sweetalert.css",
+                //UI
+                "~/Content/jquery-ui.css"
                 ));
 
         }

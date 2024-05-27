@@ -20,9 +20,20 @@ namespace VistaTiendaCerezos
             //            "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.bundle.js"));
+                      "~/Scripts/bootstrap.bundle.js",
+                       //Llamando del fontawesome
+                       "~/Scripts/fontawesome/all.min.js",
+                       //Llamar loading overlay
+                       "~/Scripts/loadingoverlay.min.js",
+                       //Lamar alert
+                       "~/Scripts/sweetalert.min.js"
+                      ));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include( "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include(
+                           "~/Content/Site.css",
+                           //Ccs de alert
+                           "~/Content/sweetalert.css"
+                           ));
         }
     }
 }

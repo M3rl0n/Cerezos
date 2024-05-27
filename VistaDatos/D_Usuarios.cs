@@ -205,5 +205,61 @@ namespace VistaDatos
             }
             return resultado;
         }
+
+        //Cambiar clave de usuario
+
+        public bool CambiarClave(int IDUsuario, string NuevaClave ,out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("update Usuario set Clave = @NuevaClave, Restablecer = 0 where IDUsuario = @id ", oconexion);
+                    cmd.Parameters.AddWithValue("@id", IDUsuario);
+                    cmd.Parameters.AddWithValue("@NuevaClave", NuevaClave);
+                    cmd.CommandType = CommandType.Text;
+                    oconexion.Open();
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
+
+        //Restablecer Clave de usuario
+
+        public bool RestablecerClave(int IDUsuario, string Clave, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
+
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("\"update Usuario set Clave = @Clave, Restablecer = 1 where IDUsuario = @id", oconexion);
+                    cmd.Parameters.AddWithValue("@id", IDUsuario);
+                    cmd.Parameters.AddWithValue("@Clave", Clave);
+                    cmd.CommandType = CommandType.Text;
+                    oconexion.Open();
+                    resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
+
+
     }
 }

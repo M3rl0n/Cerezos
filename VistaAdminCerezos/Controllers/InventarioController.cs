@@ -12,6 +12,7 @@ using VistaNegocio;
 
 namespace VistaAdminCerezos.Controllers
 {
+    [Authorize]
     public class InventarioController : Controller
     {
         // GET: Inventario

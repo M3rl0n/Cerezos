@@ -10,6 +10,7 @@ using VistaNegocio;
 
 namespace VistaAdminCerezos.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()

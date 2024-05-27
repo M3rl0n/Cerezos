@@ -7,6 +7,9 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using VistaEntidad;
 using VistaNegocio;
+using System.Web.Security;
+
+
 
 namespace VistaAdminCerezos.Controllers
 {
@@ -48,9 +51,13 @@ namespace VistaAdminCerezos.Controllers
                     return RedirectToAction("CambiarClave");
 
                 }
+                //Craear una autenticacion ddel usuario por el correo
+                FormsAuthentication.SetAuthCookie(oUsuario.Email, false);
                 ViewBag.Error = null;
                 return RedirectToAction("Index","Home");
             }
+
+
         }
 
         //Configurar cambios de clave primer inicio de sesion
@@ -94,6 +101,48 @@ namespace VistaAdminCerezos.Controllers
                 ViewBag.Error = mensaje;
                 return View();
             }
+        }
+
+        //Restablecer contraseña usuario
+
+        [HttpPost]
+
+        public ActionResult RestablecerClave(string Email)
+        {
+            UsuarioCerezos oUsuario = new UsuarioCerezos();
+
+            oUsuario = new N_Usuarios().Listar().Where(item => item.Email == Email).FirstOrDefault();
+
+            if (oUsuario == null)
+            {
+                ViewBag.Error = "No se encontro un usuario relacionado a ese correo";
+                return View();
+            }
+
+
+            string mensaje = string.Empty;
+            bool respuesta = new N_Usuarios().RestablecerClave(oUsuario.IDUsuario, Email, out mensaje);
+
+            if(respuesta)
+            {
+                ViewBag.Error = null;
+                return RedirectToAction("Index","AccesoSistema");
+
+            }
+            else
+            {
+                ViewBag.Error = mensaje;
+                return View();
+            }
+
+        }
+
+
+        //Cerrar sesion
+        public ActionResult CerrarSesion()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "AccesoSistema");
         }
 
     }

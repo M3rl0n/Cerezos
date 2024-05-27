@@ -244,7 +244,7 @@ namespace VistaDatos
 
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("\"update Usuario set Clave = @Clave, Restablecer = 1 where IDUsuario = @id", oconexion);
+                    SqlCommand cmd = new SqlCommand("update Usuario set Clave = @Clave, Restablecer = 1 where IDUsuario = @id", oconexion);
                     cmd.Parameters.AddWithValue("@id", IDUsuario);
                     cmd.Parameters.AddWithValue("@Clave", Clave);
                     cmd.CommandType = CommandType.Text;

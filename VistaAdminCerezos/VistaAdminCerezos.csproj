@@ -485,6 +485,7 @@
     <Content Include="Views\VentasCerezos\Ventas.cshtml" />
     <Content Include="Views\AccesoSistema\Index.cshtml" />
     <Content Include="Views\AccesoSistema\CambiarClave.cshtml" />
+    <Content Include="Views\AccesoSistema\RestablecerClave.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

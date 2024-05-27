@@ -21,7 +21,7 @@
         </div>
         <hr />
         @*TABLA DE Categorias*@
-        <table id="TablaUsuarios" class="display cell-border" style="width: 100%">
+        <table id="TablaCategoriaProdu" class="display cell-border" style="width: 100%">
             <thead>
                 <tr>
                     <th>Nombre</th>
@@ -106,7 +106,7 @@
                  },
          });*@
 
-        tabladata = $("#TablaUsuarios").DataTable({
+        tabladata = $("#TablaCategoriaProdu").DataTable({
             responsive: true,
             ordering: false,
             "ajax": {
@@ -160,9 +160,9 @@
         }
 
         //Funcion boton editar
-        $("#TablaUsuarios tbody").on("click",'.btn-editar', function () {
-            CategoriaProdSeleccionado = $(this).closest("tr");
-            var data = tabladata.row(CategoriaProdSeleccionado).data();
+        $("#TablaCategoriaProdu tbody").on("click",'.btn-editar', function () {
+            filaSeleccionada = $(this).closest("tr");
+            var data = tabladata.row(filaSeleccionada).data();
             console.log(data);
             //Recibe la informacion el modal
             abrirModal(data)
@@ -170,7 +170,7 @@
         })
 
         //Funcion boton eliminar
-        $("#TablaUsuarios tbody").on("click", '.btn-eliminar', function () {
+        $("#TablaCategoriaProdu tbody").on("click", '.btn-eliminar', function () {
             var CategoriaProdSeleccionado = $(this).closest("tr");
             var data = tabladata.row(CategoriaProdSeleccionado).data();
             //Advertencia

@@ -223,6 +223,7 @@
     <Content Include="webfonts\fa-brands-400.eot" />
     <Content Include="Views\TiendaCerezos\Index.cshtml" />
     <Content Include="Scripts\loadingoverlay.min.js.map" />
+    <Content Include="Views\TiendaCerezos\DetalleProducto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

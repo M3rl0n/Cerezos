@@ -17,6 +17,24 @@ namespace VistaTiendaCerezos.Controllers
             return View();
         }
 
+        public ActionResult DetalleProducto(int IDProducto = 0)
+        {
+
+            ProductosCerezos oProducto = new ProductosCerezos();
+            bool conversion;
+
+            oProducto = new N_Producto().Listar().Where(p => p.IDProducto == IDProducto).FirstOrDefault();
+
+            if(oProducto != null)
+            {
+                oProducto.Base64 = N_Recursos.ConvertirBase64(Path.Combine(oProducto.RutaImagen, oProducto.NombreImagen), out conversion);
+                oProducto.Extension = Path.GetExtension(oProducto.NombreImagen);
+            }
+            return View(oProducto);
+        }
+
+
+
         //Metodo para listar categorias productos
 
         [HttpGet]

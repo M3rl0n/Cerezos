@@ -42,9 +42,9 @@ namespace VistaDatos
                                     FechaVenta = dr["FechaVenta"].ToString(),
                                     Cliente = dr["Cliente"].ToString(),
                                     Producto = dr["Producto"].ToString(),
-                                    Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-COL")),
+                                    Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-CO")),
                                     Cantidad = Convert.ToInt32(dr["Cantidad"]),
-                                    Total = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-COL")),
+                                    Total = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-CO")),
                                     IDTransaccion = dr["IDTransaccion"].ToString()
                                 }
                                 );

@@ -28,7 +28,7 @@ namespace VistaEntidad
         public string Telefono { get; set; }
         public string Direccion { get; set; }
         public int IDCiudad { get; set; } //No referencia?
-        public int IDTransaccion { get; set; }
+        public string IDTransaccion { get; set; }
         public int IDCliente { get; set; } //No referencia?
         public List<DetalleVentaCerezos> oDetalleVenta { get; set; }
 

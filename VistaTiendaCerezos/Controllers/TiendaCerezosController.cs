@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using VistaEntidad;
@@ -153,7 +156,7 @@ namespace VistaTiendaCerezos.Controllers
 
             string mensaje = string.Empty;
 
-            respuesta = new N_CarritoCompras().OperacionCarrito(IDProducto, true, out mensaje);
+            respuesta = new N_CarritoCompras().OperacionCarrito(IDProducto, sumar, out mensaje);
 
             return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
 
@@ -209,6 +212,69 @@ namespace VistaTiendaCerezos.Controllers
         public ActionResult Carrito()
         {
             return View();
+        }
+
+        //Boton de ventas
+        [HttpPost]
+
+        public async Task<JsonResult> ProcesarPago(List<CarritoCerezos> oListaCarrito, VentaCerezos oVenta)
+        {
+            decimal total = 0;
+
+            DataTable detalle_venta = new DataTable();
+            detalle_venta.Locale = new CultureInfo("en-CO");
+            detalle_venta.Columns.Add("IDProducto", typeof(string));
+            detalle_venta.Columns.Add("Cantidad", typeof(int));
+            detalle_venta.Columns.Add("Total", typeof(decimal));
+           
+            foreach(CarritoCerezos oCarrito in oListaCarrito) {
+                decimal subtotal = Convert.ToDecimal(oCarrito.Cantidad.ToString()) * oCarrito.oProducto.Precio;
+                total += subtotal;
+
+                detalle_venta.Rows.Add(new object[]
+                {
+                    oCarrito.oProducto.IDProducto,
+                    oCarrito.Cantidad,
+                    subtotal
+                });
+            }
+
+            oVenta.MontoTotal = total;
+            oVenta.IDCliente = IDClienteTest;
+
+            TempData["Venta"]  = oVenta;
+            TempData["DetalleVenta"] = detalle_venta;
+
+            return Json(new {Status = true, Link="/TiendaCerezos/PagoEfectuado?IDTransaccion=code0001&status=true"}, JsonRequestBehavior.AllowGet);
+
+
+        }
+        //Vista de pago efecutado
+        public async Task<ActionResult> PagoEfectuado()
+        {
+
+            string IDTransaccion = Request.QueryString["IDTransaccion"];
+            bool status = Convert.ToBoolean(Request.QueryString["status"]);
+
+            ViewData["Status"] = status;
+
+            if (status)
+            {
+                VentaCerezos oVenta = (VentaCerezos)TempData["Venta"];
+                DataTable detalle_venta = (DataTable)TempData["DetalleVenta"];
+                oVenta.IDTransaccion = IDTransaccion;
+
+
+                string mensaje = string.Empty;
+
+                bool respuesta = new N_Venta().Insertar(oVenta, detalle_venta, out mensaje);
+
+                ViewData["IDTransaccion"] = oVenta.IDTransaccion;
+
+            }
+
+            return View();
+
         }
 
     }

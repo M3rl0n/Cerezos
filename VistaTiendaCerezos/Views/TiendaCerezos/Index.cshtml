@@ -172,9 +172,9 @@
                                 ),
                                 $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(
                                     $("<div>").addClass("d-grid gap-2").append(
-                                        $("<button>").addClass("btn btn-success mt-auto agregarcarrito").data("idProducto", element.IDProducto).text("Agregar al carrito"),
+                                        $("<button>").addClass("btn btn-success mt-auto agregarcarrito").data("IDProducto", element.IDProducto).text("Agregar al carrito"),
                                         $("<a>").addClass("btn btn-dark mt-auto")
-                                            .attr({ "href": "@Url.Action("DetalleProducto","TiendaCerezos")" + "?idProducto=" + element.IDProducto })
+                                            .attr({ "href": "@Url.Action("DetalleProducto","TiendaCerezos")" + "?IDProducto=" + element.IDProducto })
                                             .text("Ver detalle")
                                     )
                                 )
@@ -196,6 +196,44 @@
             var _IDCategoria = $("input[name=categoria]:checked").val()
             MostrarProductos(_IDCategoria)
         })
+
+        //Funcion para agregar al carrito
+
+        $(document).on("click", "button.agregarcarrito", function () {
+            console.log($(this).data("IDProducto"))
+
+            jQuery.ajax({
+                url: '@Url.Action("AgregarCarrito", "TiendaCerezos")',
+                type: "POST",
+                data: JSON.stringify({ IDProducto: $(this).data("IDProducto") }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.respuesta) {
+                        MonstrarCantidadCarrito();
+
+                        swal({
+                            title: "Agreado al carrito",
+                            text: "¿Desea ir al carrito?",
+                            type: "success",
+                            showCancelButton: true,
+                            confirmButtonClass: "btn-primary",
+                            confirmButtonText: "SI",
+                            cancelButtonText: "NO",
+                            closeOnConfirm: true,
+                        }, function () {
+                            window.location.href = '@Url.Action("Carrito","TiendaCerezos")'
+                        })
+                    } else {
+                        swal("", data.mensaje, "warning");
+                    }
+                }
+            });
+
+
+        })
+
+
 
     </script>
 

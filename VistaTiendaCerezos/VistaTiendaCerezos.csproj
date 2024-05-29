@@ -224,6 +224,7 @@
     <Content Include="Views\TiendaCerezos\Index.cshtml" />
     <Content Include="Scripts\loadingoverlay.min.js.map" />
     <Content Include="Views\TiendaCerezos\DetalleProducto.cshtml" />
+    <Content Include="Views\TiendaCerezos\Carrito.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

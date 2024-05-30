@@ -482,7 +482,6 @@
     <Content Include="Views\GestClientes\Clientes.cshtml" />
     <Content Include="Views\GestClientes\Pedidos.cshtml" />
     <Content Include="Views\GestClientes\Solicitudes.cshtml" />
-    <Content Include="Views\VentasCerezos\Ventas.cshtml" />
     <Content Include="Views\AccesoSistema\Index.cshtml" />
     <Content Include="Views\AccesoSistema\CambiarClave.cshtml" />
     <Content Include="Views\AccesoSistema\RestablecerClave.cshtml" />

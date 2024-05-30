@@ -16,9 +16,9 @@ namespace VistaEntidad
     {
         //Propiedades de clase
         public int IDSeguimiento { get; set; }
-        public int Descripcion { get; set; }
-        public int IDTipo_Estado_Envio { get; set; } //Duda si llanar clase de estado envio
-        public ClienteCerezos OCliente { get; set; } //Duda si llamar Clase cliente
+        public String Descripcion { get; set; }
+        public TPEstadosENVCerezos oEstadoEnvio { get; set; } //Duda si llanar clase de estado envio
+        public int IDCliente { get; set; } //Duda si llamar Clase cliente
 
     }
 }

@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="N_Envio.cs" />
     <Compile Include="N_CarritoCompras.cs" />
     <Compile Include="N_CategoriaProd.cs" />
     <Compile Include="N_Paypal.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="N_Recursos.cs" />
     <Compile Include="N_Cliente.cs" />
     <Compile Include="N_Reporte.cs" />
+    <Compile Include="N_Solicitudes.cs" />
     <Compile Include="N_Ubicacion.cs" />
     <Compile Include="N_Usuarios.cs" />
     <Compile Include="N_Venta.cs" />

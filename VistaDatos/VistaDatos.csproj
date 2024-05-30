@@ -49,8 +49,10 @@
     <Compile Include="D_CategoriaProd.cs" />
     <Compile Include="D_Cliente.cs" />
     <Compile Include="Conexion.cs" />
+    <Compile Include="D_Envio.cs" />
     <Compile Include="D_Productos.cs" />
     <Compile Include="D_Reporte.cs" />
+    <Compile Include="D_Solicitudes.cs" />
     <Compile Include="D_Ubicacion.cs" />
     <Compile Include="D_Usuarios.cs" />
     <Compile Include="D_Ventas.cs" />

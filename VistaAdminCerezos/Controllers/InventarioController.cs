@@ -54,7 +54,7 @@ namespace VistaAdminCerezos.Controllers
             }
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
-        //Eliminar Usuario
+        //Eliminar categoria
         [HttpPost]
         public JsonResult EliminarCategoriaProd(int id)
         {

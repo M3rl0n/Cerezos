@@ -20,77 +20,45 @@ namespace VistaNegocio
             return objVistaDato.listar();
         }
 
-
-        //Llamado de metodo insertar, reglas de negocio
-        public int Insertar(ClienteCerezos obj, out string Mensaje)
+        //Lllamar metodo de actualizar
+        //Llamado de metodo Actualizar, reglas de negocio
+        public bool Actualizar(ClienteCerezos obj, out string Mensaje)
         {
             Mensaje = string.Empty;
             //Validar campo nombre
             if (string.IsNullOrEmpty(obj.Nombre) || string.IsNullOrWhiteSpace(obj.Nombre))
             {
-                Mensaje = "El nombre del usuario no puede ser vacio";
+                Mensaje = "El nombre del cliente no puede ser vacio";
             }
-            //Validar campo Apellido
+            //Validar campo Apelldio
             if (string.IsNullOrEmpty(obj.Apellido) || string.IsNullOrWhiteSpace(obj.Apellido))
             {
-                Mensaje = "El apellido del usuario no puede ser vacio";
+                Mensaje = "El nombre del cliente no puede ser vacio";
             }
             //Validar campo Correo
             if (string.IsNullOrEmpty(obj.Email) || string.IsNullOrWhiteSpace(obj.Email))
             {
-                Mensaje = "El email del usuario no puede ser vacio";
+                Mensaje = "El nombre del cliente no puede ser vacio";
             }
 
-            return 0;
+            if (string.IsNullOrEmpty(Mensaje))
+            {
+                return objVistaDato.Actualizar(obj, out Mensaje);
+            }
+            else
+            {
+                return false;
+            }
 
+        }
+
+        //Llamado de metodo Eliminar, reglas de negocio
+        public bool Eliminar(int id, out string Mensaje)
+        {
+            return objVistaDato.Eliminar(id, out Mensaje);
         }
 
 
 
-        //!!!!SE COMENTA PORQUE SE HACE REFERENCIA A CLASES QUE TODAVIA NO HAN SIDO CREADAS EN VISTAADMIN!!!!
-        //public int Insertar(ClienteCerezos obj, out string Mensaje)
-        //{
-        //    Mensaje = string.Empty;
-
-        //    if (string.IsNullOrEmpty(obj.Nombre) || string.IsNullOrWhiteSpace(obj.Nombre))
-        //    {
-        //        Mensaje = "El nombre del usuario no puede ser vacio";
-        //    }
-        //    else if (string.IsNullOrEmpty(obj.Apellido) || string.IsNullOrWhiteSpace(obj.Apellido))
-        //    {
-        //        Mensaje = "El apellido del usuario no puede ser vacio";
-        //    }
-        //    else if (string.IsNullOrEmpty(obj.Email) || string.IsNullOrWhiteSpace(obj.Email))
-        //    {
-        //        Mensaje = "El correo del usuario no puede ser vacio";
-        //    }
-
-        //    if (string.IsNullOrEmpty(Mensaje))
-        //    {
-        //        Clave que no ha sido creada
-        //        string clave = N_Recursos.GenerarClave();
-
-        //        string asunto = "Creación de cuenta";
-        //        string mensaje_email = "<h3>Su cuenta fue creada correctamente</h3></br><p> Su contraseña para acceder es: !clave";
-        //        mensaje_email = mensaje_email.Replace("!clave!", clave);
-
-        //        bool respuesta = N_Recursos.EnviarEmail(obj.Email, asunto, mensaje_email);
-        //        if (respuesta)
-        //        {
-        //            obj.Clave = N_Recursos.ConvertirSha256(clave);
-        //            return objVistaDato.Registrar(obj, out Mensaje);
-
-        //        }
-        //        else
-        //        {
-        //            Mensaje = "No se puede enviar el email";
-        //            return 0;
-        //        }
-        //    }
-        //}
-        //public bool CambiarClave(int IDCliente, string nuevaclave, out string Mensaje)
-        //{
-        //    return objVistaDatos.CambiarClave(IDCliente, nuevaclave, out Mensaje);
-        //}
     }
 }

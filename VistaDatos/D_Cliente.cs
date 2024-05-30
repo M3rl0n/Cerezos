@@ -52,91 +52,76 @@ namespace VistaDatos
 
             return lista;
         }
-       
-        //Insertar Clientes en la BD
-        public int Insertar(ClienteCerezos obj,out string Mensaje)
-        {
-            int idautogenerado = 0;
 
+        //Actualizar Clientes en la BD
+        public bool Actualizar(ClienteCerezos obj, out string Mensaje)
+        {
+            bool resultado = false;
             Mensaje = string.Empty;
             try
             {
-                using(SqlConnection oconexion = new SqlConnection(Conexion.cn))
+
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("sp_RegistrarCliente", oconexion);
+                    SqlCommand cmd = new SqlCommand("sp_EditarCliente", oconexion);
+                    cmd.Parameters.AddWithValue("IDCliente", obj.IDCliente);
                     cmd.Parameters.AddWithValue("Nombre", obj.Nombre);
-                    cmd.Parameters.AddWithValue("Apellido", obj.Nombre);
-                    cmd.Parameters.AddWithValue("Email", obj.Nombre);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar,500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("Apellido", obj.Apellido);
+                    cmd.Parameters.AddWithValue("Email", obj.Email);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     oconexion.Open();
+
                     cmd.ExecuteNonQuery();
-                    idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+
+                    //Ultimo id generado con la bd
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
                     Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
                 }
             }
             catch (Exception ex)
             {
-                idautogenerado = 0;
+                resultado = false;
                 Mensaje = ex.Message;
             }
-            return idautogenerado;
+            return resultado;
         }
 
-        //Actualizar Clientes en la BD
+        //ELIMINAR CATEGORIA PRODUCTO
+        public bool Eliminar(int id, out string Mensaje)
+        {
+            bool resultado = false;
+            Mensaje = string.Empty;
+            try
+            {
 
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    SqlCommand cmd = new SqlCommand("sp_EliminarCliente", oconexion);
+                    cmd.Parameters.AddWithValue("IDCliente", id);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    oconexion.Open();
 
+                    cmd.ExecuteNonQuery();
 
-        ////No va esto
-        //public bool ReestablecerClave(int IDCliente, string clave, out string Mensaje)
-        //{
-        //    bool resultado = false;
-        //    Mensaje = string.Empty;
-        //    try
-        //    {
-        //        using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
-        //        {
-        //            SqlCommand cmd = new SqlCommand("Update cliente set clave = @nuevaclave, reestablecer = 1 where IDCliente = @id", oconexion);
-        //            cmd.Parameters.AddWithValue("@IDCliente", IDCliente);
-        //            cmd.Parameters.AddWithValue("@nuevaclave", clave);
-        //            cmd.CommandType = CommandType.Text;
-        //            oconexion.Open();
-        //            resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        resultado = false;
-        //        Mensaje = ex.Message;
-        //    }
-        //    return resultado;
-        //}
-        //public bool CambiarClave(int IDCliente, string nuevaClave,out string Mensaje)
-        //{
-        //    bool resultado = false;
-        //    Mensaje = string.Empty;
-        //    try
-        //    {
-        //        using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
-        //        {
-        //            SqlCommand cmd = new SqlCommand("Update cliente set clave = @nuevaclave, reestablecer = 0 where IDCliente = @id",oconexion);
-        //            cmd.Parameters.AddWithValue("@IDCliente", IDCliente);
-        //            cmd.Parameters.AddWithValue("@nuevaclave", nuevaClave);
-        //            cmd.CommandType = CommandType.Text;
-        //            oconexion.Open();
-        //            resultado = cmd.ExecuteNonQuery() > 0 ? true : false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        resultado = false;
-        //        Mensaje = ex.Message;
-        //    }
-        //    return resultado;
-        //}
+                    //Validacion si elimino o no
+                    resultado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                Mensaje = ex.Message;
+            }
+            return resultado;
+        }
+
 
     }
 }
